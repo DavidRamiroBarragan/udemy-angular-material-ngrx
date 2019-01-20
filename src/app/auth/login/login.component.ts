@@ -1,20 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
-@Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
-})
+@Component( {
+	selector: 'app-login',
+	templateUrl: './login.component.html',
+	styleUrls: [ './login.component.css' ]
+} )
 
 export class LoginComponent implements OnInit {
-	maxDate = new Date();
-  constructor() { }
+	loginForm: FormGroup;
 
-  ngOnInit() {
-  	this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
-  }
-	onSubmit(form: NgForm) {
-	console.log(form);
+	constructor( private _authService: AuthService ) { }
+
+	ngOnInit() {
+		this.loginForm = new FormGroup(
+			{
+				email: new FormControl( '', [ Validators.email, Validators.required ] ),
+				password: new FormControl( '', [ Validators.required, Validators.minLength( 6 ) ] )
+			}
+		);
+	}
+
+	onSubmit() {
+		this._authService.login( {
+			email: this.loginForm.value.email,
+			password: this.loginForm.value.password
+		} );
 	}
 }
