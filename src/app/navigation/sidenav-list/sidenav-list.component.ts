@@ -9,7 +9,7 @@ import { AuthService } from '../../auth/auth.service';
 } )
 export class SidenavListComponent implements OnInit, OnDestroy {
 	@Output()
-	sidenavToggle = new EventEmitter<void>();
+	sidenavComponentToggle = new EventEmitter<void>();
 
 	isAuth = false;
 	isAuthSubscription: Subscription;
@@ -23,7 +23,13 @@ export class SidenavListComponent implements OnInit, OnDestroy {
 	}
 
 	onClose() {
-		this.sidenavToggle.emit();
+		this.sidenavComponentToggle.emit();
+	}
+
+	onLogout() {
+		this.onClose();
+		this._authService.logout();
+		console.log( 'fsdfsadfsad' );
 	}
 
 	ngOnDestroy() {
